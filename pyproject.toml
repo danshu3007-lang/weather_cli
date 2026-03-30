@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "weather-api"
+version = "0.1.0"
+requires-python = ">=3.10"
+dependencies = ["requests>=2.31.0", "urllib3>=2.0.0"]
+
+[project.optional-dependencies]
+server = ["flask>=3.0.0"]
+
+[project.scripts]
+weather = "weather.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["weather*"]
