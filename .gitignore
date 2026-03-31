@@ -5,3 +5,5 @@ myenv/
 .env
 .vscode/
 .DS_Store
+dist/
+*.egg-info/
