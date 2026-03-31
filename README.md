@@ -2,9 +2,11 @@
 
 > Get live weather for any city — directly in your terminal. No API key. No signup. Just run it.
 
-![Python](https://img.shields.io/badge/Python-3.10+-blue?style=flat-square&logo=python)
-![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
-![Powered by](https://img.shields.io/badge/Powered%20by-Open--Meteo-orange?style=flat-square)
+[![PyPI version](https://img.shields.io/pypi/v/weather-cli-tool?style=flat-square&color=blue)](https://pypi.org/project/weather-cli-tool/)
+[![Python](https://img.shields.io/badge/Python-3.10+-blue?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
+[![Powered by Open-Meteo](https://img.shields.io/badge/Powered%20by-Open--Meteo-orange?style=flat-square)](https://open-meteo.com/)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen?style=flat-square)](CONTRIBUTING.md)
 
 ```
 $ python weather.py Delhi
@@ -23,47 +25,49 @@ $ python weather.py Delhi
 
 ## 🤔 Why I built this
 
-I wanted a simple way to check the weather without opening a browser or signing up for an API key.
-Most weather tools are either bloated or require accounts. This is **one Python file, one dependency, runs anywhere**.
+I wanted a simple way to check weather without opening a browser or signing up anywhere.
+Most weather tools are either bloated or require API keys. This is **one Python file, one dependency, runs anywhere**.
 
 ---
 
-## ✨ What it does
+## ✨ Features
 
 - 🌍 Live weather for **any city in the world**
-- ⚡ **5-minute cache** — won't spam the API if you run it twice
-- 🔁 **Auto-retries** on bad network with exponential backoff
-- 🧾 **JSON mode** — pipe the output into other scripts
-- 🛡 Handles errors cleanly — typos, network issues, bad responses
-- 📦 **Single file** — no install, no config, just `python weather.py`
+- ⚡ **5-minute cache** — no redundant API calls
+- 🔁 **Auto-retry** with exponential backoff on network errors
+- 🧾 **JSON output** mode for scripting and data pipelines
+- 🛡 Clean error handling — wrong city, timeout, network failure
+- 📦 **Single file** — download and run, zero complex setup
 
 ---
 
-## 🚀 Setup
+## 🚀 Installation
 
+**Option A — pip (recommended):**
 ```bash
-# 1. Install the only dependency
-pip install requests
-
-# 2. Run it
-python weather.py London
+pip install weather-cli-tool
+weather-cli London
 ```
 
-That's it.
+**Option B — run directly:**
+```bash
+pip install requests
+python weather.py London
+```
 
 ---
 
 ## 💻 Usage
 
 ```bash
-python weather.py Mumbai                # basic lookup
-python weather.py "New York"            # multi-word cities need quotes
-python weather.py Tokyo --refresh       # skip cache, get fresh data
-python weather.py Sydney --json         # raw JSON output
-python weather.py Paris --verbose       # show debug logs
+weather-cli Mumbai                # basic lookup
+weather-cli "New York"            # multi-word cities need quotes
+weather-cli Tokyo --refresh       # skip cache, fetch fresh data
+weather-cli Sydney --json         # raw JSON output
+weather-cli Paris --verbose       # show debug logs
 ```
 
-**JSON output** (useful for data pipelines):
+**JSON output — great for data pipelines:**
 ```json
 {
   "city": "Sydney",
@@ -81,33 +85,28 @@ python weather.py Paris --verbose       # show debug logs
 ## ⚙️ How it works
 
 ```
-Your input (city name)
-      │
-      ▼
- Geocoding API  ──►  city name → lat/lon coordinates
-      │
-      ▼
- Weather API    ──►  lat/lon → temperature, humidity, wind
-      │
-      ▼
- Cache layer    ──►  stores result for 5 minutes
-      │
-      ▼
- Your terminal  ──►  clean formatted output
+Your input  →  Geocoding API  →  city name to lat/lon
+                                        │
+                                        ▼
+               Weather API    →  temperature, humidity, wind
+                                        │
+                                        ▼
+               Cache layer    →  stores result 5 minutes
+                                        │
+                                        ▼
+               Your terminal  →  clean formatted output
 ```
-
-The entire flow is handled in one file with no global state leaking between layers.
 
 ---
 
-## 🛠 Technical choices
+## 🛠 Technical decisions
 
 | What | How | Why |
 |---|---|---|
-| HTTP | `requests` + `urllib3.Retry` | Auto-retry on 5xx errors and timeouts |
-| Caching | In-memory dict with TTL | No database needed for a CLI tool |
-| Error handling | Custom exception hierarchy | Different errors need different responses |
-| Data source | Open-Meteo API | Free, no API key, reliable |
+| HTTP | `requests` + `urllib3.Retry` | Auto-retry on 5xx and timeouts |
+| Caching | In-memory dict with TTL | No database needed for a CLI |
+| Errors | Custom exception types | Different failures need different responses |
+| Data | Open-Meteo API | Free, open, no key required |
 
 ---
 
@@ -120,16 +119,26 @@ requests>=2.31.0
 
 ---
 
-## 👨‍💻 About me
+## 🤝 Contributing
 
-I'm **Deepanshu**, a BCA student at Chandigarh University passionate about Data Analytics and building practical tools with Python.
+Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for how to get started.
 
-This project was my way of learning how to write **production-style Python** — not just code that works, but code that handles failures gracefully, respects resources (caching), and is easy for others to use.
+Some ideas if you want to contribute:
+- Add `--fahrenheit` flag
+- Add sunrise/sunset times
+- Add weekly forecast with `--week`
+- Add support for lat/lon coordinates directly
 
-📫 Connect with me on GitHub — I'm always building something new.
+---
+
+## 👨‍💻 About
+
+Built by **Deepanshu** — BCA Student at Chandigarh University, aspiring Data Analyst.
+
+This project was my way of practising **production-style Python** — not just code that works, but code that handles failures gracefully, respects API resources with caching, and is easy for others to use and contribute to.
 
 ---
 
 ## 📄 License
 
-MIT — free to use, modify, and share.
+[MIT](LICENSE) — free to use, modify, and distribute.
